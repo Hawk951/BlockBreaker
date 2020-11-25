@@ -1,12 +1,17 @@
 var paddle;
 var ball;
 var bricks;
+var font;
 var score;
 
+function preload() {
+    font = loadFont('assets/SourceSansPro-Regular.ttf');
+}
+
 function setup() {
-    createCanvas(800,600);
+    createCanvas(800, 600, WEBGL);
     noStroke();
-    paddle = new Paddle(width /2, height - 40);
+    paddle = new Paddle(width / 2, height - 40);
     ball = new Ball(paddle, bricks, score);
     bricks = generateBricks(3, 8);
     score = 0;
@@ -16,19 +21,23 @@ function generateBricks(noRows, bricksPerRow) {
     const bricklist = [];
     for(let row = 0; row < noRows; row++) {  
         for(let i = 0; i < bricksPerRow; i++) {
-            bricklist.push(new Brick(10 + (100 * i), 60 + row * 60, pastelColor()));
+            let brickWid = int(width / bricksPerRow);
+            let brickHei = int(140 / noRows);
+            bricklist.push(new Brick(brickWid / 2 + brickWid * i, 90 + (row * brickHei), brickWid - 20, brickHei - 20, pastelColor()));
         }
     }
     return bricklist;
 }
 
 function pastelColor() {
-    return color(`hsl(${int(random(0, 360))}, 25%, 75%)`);
+    return color(`hsl(${int(random(0, 360))}, 45%, 75%)`);
 }
 
 function draw() {
+    translate(-400, -300, 0);
+    pointLight(250, 250, 250, 0, 0, 500);
     background(51);
-    textSize(32);
+    textFont(font, 32);
     fill(255);
     text(`Score: ${this.score}`, width - 160, 40);
     paddle.show();

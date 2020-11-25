@@ -1,13 +1,17 @@
 class Brick {
-    constructor(x, y, color) {
+    constructor(x, y, width, height, color) {
         this.location = createVector(x, y);
-        this.width = 80;
-        this.height = 30;
+        this.width = width;
+        this.height = height
+        this.depth = 30;
         this.color = color;
     }
 
     show() {
+        push();
         fill(this.color);
-        rect(this.location.x, this.location.y, this.width, this.height)
+        translate(this.location.x, this.location.y);
+        box(this.width, this.height, this.depth);
+        pop();
     }
 }
