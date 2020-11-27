@@ -14,7 +14,7 @@ class Ball {
     show() {
         push();
         fill(this.color);
-        translate(this.location.x, this.location.y)
+        translate(this.location.x, this.location.y);
         sphere(this.rad, this.rad);
         pop();
     }
@@ -54,9 +54,14 @@ class Ball {
         // Ball is within x scope of brick
         if(this.location.x - this.rad > brick.location.x - brick.width / 2 && this.location.x + this.rad < brick.location.x + brick.width / 2) {
             // Ball is within y scope of paddle
-            if(this.location.y - this.rad > brick.location.y - brick.width / 2 && this.location.y + this.rad < brick.location.y + brick.height / 2) {
-                bricks.splice(bricks.indexOf(brick), 1);
-                this.reflectY();
+            if(this.location.y - this.rad > brick.location.y - brick.height / 2 && this.location.y + this.rad < brick.location.y + brick.height / 2) {
+                let prev = p5.Vector.sub(this.location, this.velocity);
+                if(prev.x - this.rad > brick.location.x - brick.width / 2 && prev.x + this.rad < brick.location.x + brick.width / 2) {
+                    this.reflectY();
+                }
+                if(prev.y - this.rad > brick.location.y - brick.height / 2 && prev.y + this.rad < brick.location.y + brick.height / 2) {
+                    this.reflectX();
+                }
                 return true;
             }
         }

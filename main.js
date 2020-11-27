@@ -3,9 +3,10 @@ var ball;
 var bricks;
 var font;
 var score;
+var scoreObj;
 
 function preload() {
-    font = loadFont('assets/SourceSansPro-Regular.ttf');
+    font = loadFont('assets/PressStart2P-vaV7.ttf');
 }
 
 function setup() {
@@ -15,15 +16,17 @@ function setup() {
     ball = new Ball(paddle, bricks, score);
     bricks = generateBricks(3, 8);
     score = 0;
+    scoreObj = new ProjectText('Score: '+score, font, 30, width - 260, 40, 20);
 }
 
 function generateBricks(noRows, bricksPerRow) {
+    let spacing = 20;
     const bricklist = [];
     for(let row = 0; row < noRows; row++) {  
         for(let i = 0; i < bricksPerRow; i++) {
-            let brickWid = int(width / bricksPerRow);
+            let brickWid = int((width - spacing) / bricksPerRow);
             let brickHei = int(140 / noRows);
-            bricklist.push(new Brick(brickWid / 2 + brickWid * i, 90 + (row * brickHei), brickWid - 20, brickHei - 20, pastelColor()));
+            bricklist.push(new Brick(spacing / 2 + (brickWid / 2 + brickWid * i), 90 + (row * brickHei), brickWid - spacing, brickHei - spacing, pastelColor()));
         }
     }
     return bricklist;
@@ -34,17 +37,19 @@ function pastelColor() {
 }
 
 function draw() {
-    translate(-400, -300, 0);
-    pointLight(250, 250, 250, 0, 0, 500);
     background(51);
-    textFont(font, 32);
-    fill(255);
-    text(`Score: ${this.score}`, width - 160, 40);
+    translate(-400, -300, 0);
+    ambientLight(100);
+    pointLight(500, 500, 250, 0, 0, 500);
+    scoreObj.show();
+    textFont(font, 25);
     paddle.show();
     for (const brick of bricks) {
         brick.show();
         if(ball.brickCollision(brick)) {
-            score++;
+            score += brick.points;
+            scoreObj.update('Score: '+score);
+            bricks.splice(bricks.indexOf(brick), 1);
         }
     }
     ball.boundryCollision();
@@ -58,15 +63,11 @@ function draw() {
         paddle.move('r');
     }
     if(ball.belowBottom()) {
-        textSize(60);
-        textAlign(CENTER, CENTER);
-        text('Game Over', 0, height / 2, width);
+        new ProjectText('Game Over', font, 60, 100, height / 2 + 40, 20);
         noLoop();            
     }
     if(bricks.length === 0) {
-        textSize(60);
-        textAlign(CENTER, CENTER);
-        text('You Win!', 0, height / 2, width);
+        new ProjectText('You Win!', font, 60, 0, height / 2, 20);
         noLoop();            
     }
 }

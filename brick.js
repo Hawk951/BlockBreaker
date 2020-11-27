@@ -5,6 +5,7 @@ class Brick {
         this.height = height
         this.depth = 30;
         this.color = color;
+        this.points = 1;
     }
 
     show() {
