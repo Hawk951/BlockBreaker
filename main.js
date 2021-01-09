@@ -18,7 +18,7 @@ function setup() {
     ball = new Ball(paddle, bricks, score);
     bricks = generateBricks(3, 8);
     score = 0;
-    scoreObj = new ProjectText('Score: '+score, font, 30, width - 260, 40, 20);
+    scoreObj = new ProjectText('Score: '+score, font, 30, width - 290, 40, 20);
 }
 
 function generateBricks(noRows, bricksPerRow) {
@@ -60,18 +60,16 @@ function draw() {
     ball.show();
     if (keyIsDown(LEFT_ARROW)) {
         paddle.move('l');
-        cam.move(-1, 0, 0);
       }
     if (keyIsDown(RIGHT_ARROW)) {
         paddle.move('r');
-        cam.move(1, 0, 0);
     }
     if(ball.belowBottom()) {
         new ProjectText('Game Over', font, 60, 100, height / 2 + 40, 20);
         noLoop();            
     }
     if(bricks.length === 0) {
-        new ProjectText('You Win!', font, 60, 0, height / 2, 20);
+        new ProjectText('You Win!', font, 60, 0, height / 2 + 40, 20);
         noLoop();            
     }
 }

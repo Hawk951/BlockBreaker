@@ -7,7 +7,7 @@ class Ball {
         this.rad = this.width / 2;
         this.paddle = paddle;
         this.color = color('silver');
-        this.location = createVector(paddle.location.x, paddle.location.y - (paddle.height / 2) + (this.height / 2));
+        this.location = createVector(paddle.location.x, paddle.location.y - (paddle.height / 2) - this.rad - 10);
         this.velocity = createVector(5, -5);
     }
 
@@ -42,24 +42,38 @@ class Ball {
 
     paddleCollision() {
         // Ball is within x scope of paddle
-        if(this.location.x - this.rad > paddle.location.x - paddle.width / 2 && this.location.x + this.rad < paddle.location.x + paddle.width / 2) {
+        const ballX = this.location.x;
+        const paddleMinX = paddle.location.x - (paddle.width / 2);
+        const paddleMaxX = paddle.location.x + (paddle.width / 2);
+        if(ballX > paddleMinX && ballX < paddleMaxX) {
             // Ball is within y scope of paddle
-            if(this.location.y + this.rad > paddle.location.y + paddle.height / 2 && this.location.y - this.rad < paddle.location.y + paddle.height / 2) {
+            console.log('x hit');
+            const ballY = this.location.y + this.rad; // Bottom of ball
+            const paddleMinY = paddle.location.y - (paddle.height / 2);
+            const paddleMaxY = paddle.location.y + (paddle.height / 2);
+            if(ballY > paddleMinY && ballY < paddleMaxY) {
                 this.reflectY();
+                console.log('y hit');
             }
         }
     }
 
     brickCollision(brick) {
         // Ball is within x scope of brick
-        if(this.location.x - this.rad > brick.location.x - brick.width / 2 && this.location.x + this.rad < brick.location.x + brick.width / 2) {
+        const ballX = this.location.x;
+        const brickMinX = brick.location.x - (brick.width / 2);
+        const brickMaxX = brick.location.x + (brick.width / 2);
+        if(ballX > brickMinX && ballX < brickMaxX) {
             // Ball is within y scope of paddle
-            if(this.location.y - this.rad > brick.location.y - brick.height / 2 && this.location.y + this.rad < brick.location.y + brick.height / 2) {
+            const ballY = this.location.y;
+            const brickMinY = brick.location.y - (brick.height / 2);
+            const brickMaxY = brick.location.y + (brick.height / 2);
+            if(ballY > brickMinY && ballY < brickMaxY) {
                 let prev = p5.Vector.sub(this.location, this.velocity);
-                if(prev.x - this.rad > brick.location.x - brick.width / 2 && prev.x + this.rad < brick.location.x + brick.width / 2) {
+                if(prev.x > brickMinX && prev.x < brickMaxX) {
                     this.reflectY();
                 }
-                if(prev.y - this.rad > brick.location.y - brick.height / 2 && prev.y + this.rad < brick.location.y + brick.height / 2) {
+                if(prev.y > brickMinY && prev.y < brickMaxY) {
                     this.reflectX();
                 }
                 return true;
