@@ -25,7 +25,7 @@ class ProjectText {
         let offset = 0;
         for (const model of this.models) {
             push();
-            stroke(2);
+            //stroke(2);
             translate(this.x + (offset * this.fontSize), this.y);
             // front face
             fill(255);

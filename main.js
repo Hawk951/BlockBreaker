@@ -4,6 +4,7 @@ var bricks;
 var font;
 var score;
 var scoreObj;
+let cam;
 
 function preload() {
     font = loadFont('assets/PressStart2P-vaV7.ttf');
@@ -12,6 +13,7 @@ function preload() {
 function setup() {
     createCanvas(800, 600, WEBGL);
     noStroke();
+    cam = createCamera();
     paddle = new Paddle(width / 2, height - 40);
     ball = new Ball(paddle, bricks, score);
     bricks = generateBricks(3, 8);
@@ -57,10 +59,12 @@ function draw() {
     ball.update();    
     ball.show();
     if (keyIsDown(LEFT_ARROW)) {
-        paddle.move('l')
+        paddle.move('l');
+        cam.move(-1, 0, 0);
       }
     if (keyIsDown(RIGHT_ARROW)) {
         paddle.move('r');
+        cam.move(1, 0, 0);
     }
     if(ball.belowBottom()) {
         new ProjectText('Game Over', font, 60, 100, height / 2 + 40, 20);
